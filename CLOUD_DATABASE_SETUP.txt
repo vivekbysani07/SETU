@@ -1,0 +1,118 @@
+SETU — HOW TO CREATE A CLOUD DATABASE AND CONNECT IT TO YOUR PROTOTYPE
+========================================================================
+
+By default Setu stores everything in a local file, setu.db (SQLite). That's
+fine for testing on your own laptop, but it's a single file — not something
+a real deployment should depend on. This guide walks through creating a real
+managed database on Google Cloud (Cloud SQL for PostgreSQL) and pointing
+your prototype at it instead. Nothing in the code needs to change — only
+one environment variable, DATABASE_URL.
+
+You will need:
+  - A Google Cloud account with billing enabled
+  - The gcloud CLI installed and logged in (gcloud init)
+  - About 10 minutes (instance creation takes a few minutes to finish)
+
+
+STEP 1 — Enable the Cloud SQL Admin API
+----------------------------------------
+gcloud services enable sqladmin.googleapis.com
+
+
+STEP 2 — Create the Postgres instance
+----------------------------------------
+Replace setu-db, the region, and the password with your own choices.
+
+gcloud sql instances create setu-db \
+  --database-version=POSTGRES_15 \
+  --tier=db-f1-micro \
+  --region=us-central1 \
+  --root-password=CHOOSE_A_STRONG_PASSWORD
+
+This takes a few minutes. You can check on it with:
+  gcloud sql instances describe setu-db
+
+
+STEP 3 — Create the database and a user inside it
+----------------------------------------
+gcloud sql databases create setu --instance=setu-db
+
+gcloud sql users create setu-user \
+  --instance=setu-db \
+  --password=CHOOSE_A_STRONG_PASSWORD
+
+
+STEP 4 — Get the instance's connection name
+----------------------------------------
+gcloud sql instances describe setu-db --format='value(connectionName)'
+
+This prints something like:  your-project:us-central1:setu-db
+Save it — you need it in steps 5 and 6 below.
+
+
+STEP 5 — Connect from your own laptop (for testing before you deploy)
+----------------------------------------
+Google's recommended way to reach Cloud SQL from a laptop is the Cloud SQL
+Auth Proxy — it avoids exposing the database to the open internet.
+
+  1. Download the proxy once:
+     https://cloud.google.com/sql/docs/postgres/sql-proxy#install
+
+  2. Run it in its own terminal window and leave it running:
+     ./cloud-sql-proxy your-project:us-central1:setu-db --port 5432
+
+  3. In your .env file (copy .env.example to .env if you haven't), set:
+     DATABASE_URL=postgresql+psycopg2://setu-user:CHOOSE_A_STRONG_PASSWORD@127.0.0.1:5432/setu
+
+  4. Restart the app:
+     python main.py
+
+  5. Confirm it worked — open http://127.0.0.1:8000/api/health in your
+     browser. You should see "database": "postgres / cloud sql" instead
+     of "sqlite (local file)".
+
+
+STEP 6 — Connect from Cloud Run (for the real deployment)
+----------------------------------------
+Cloud Run talks to Cloud SQL over a private Unix socket automatically —
+no proxy needed here, just two extra flags on the deploy command.
+
+gcloud builds submit --tag gcr.io/YOUR_PROJECT/setu-app
+
+gcloud run deploy setu-app \
+  --image gcr.io/YOUR_PROJECT/setu-app \
+  --add-cloudsql-instances your-project:us-central1:setu-db \
+  --set-env-vars GEMINI_API_KEY=your_gemini_key,DATABASE_URL="postgresql+psycopg2://setu-user:CHOOSE_A_STRONG_PASSWORD@/setu?host=/cloudsql/your-project:us-central1:setu-db" \
+  --allow-unauthenticated \
+  --region us-central1
+
+The command prints a public URL, something like:
+  https://setu-app-xxxxx-uc.a.run.app
+
+Open it — same app, now backed by Cloud SQL, reachable from anywhere.
+
+
+THINGS WORTH KNOWING
+----------------------------------------
+- The DATABASE_URL format is the ONLY thing that changes between SQLite and
+  Postgres. Nothing in main.py, models.py, or database.py needs editing —
+  SQLAlchemy reads the URL and picks the right driver automatically.
+
+- If DATABASE_URL is left empty or missing, the app quietly falls back to
+  the local setu.db file. That's intentional, so a missing cloud database
+  never breaks local development.
+
+- The password you choose goes straight into DATABASE_URL as plain text.
+  Don't commit your real .env file to a public GitHub repo — .env should
+  already be listed in .gitignore. For a real production deployment,
+  consider Google Secret Manager instead of a plain environment variable.
+
+- gcloud sql instances create can also target other database engines
+  (MySQL, SQL Server) if you'd rather use one of those — just change
+  --database-version and the driver prefix in DATABASE_URL accordingly
+  (e.g. mysql+pymysql://... for MySQL). Postgres is what this app's
+  requirements.txt is set up for (psycopg2-binary) without any extra
+  installs.
+
+- To go back to local SQLite at any point, just remove or comment out
+  DATABASE_URL in your .env and restart — no other change needed.
