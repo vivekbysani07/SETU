@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setu</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari&family=Noto+Sans+Telugu&family=Noto+Sans+Kannada&family=Noto+Sans+Tamil&family=Noto+Sans+Malayalam&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101826;--surface:#17233A;--alt:#1E2C47;--border:#2A3A57;--text:#ECEEF3;--muted:#9AA6BC;--amber:#E8A33D;--on-amber:#1A1200;--teal:#4FB6A5;--red:#D9634A;
+ --ix:"Noto Sans Devanagari","Noto Sans Telugu","Noto Sans Kannada","Noto Sans Tamil","Noto Sans Malayalam";
+ font-family:"IBM Plex Sans",-apple-system,"Segoe UI",var(--ix),sans-serif;color-scheme:dark}
+:root[data-theme="light"]{--bg:#F4F6FB;--surface:#fff;--alt:#EDF0F7;--border:#D3DAE8;--text:#16213A;--muted:#5A6786;--amber:#B36A00;--on-amber:#fff;--teal:#1C8574;--red:#C23F27;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);line-height:1.5}
+h1,h2,h3{font-family:"Fraunces",Georgia,var(--ix),serif;margin:0}
+button,input,select,textarea{font:inherit;color:var(--text)}
+button{cursor:pointer}
+button:focus-visible,input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 70px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand h1{font-size:26px}.brand span{color:var(--muted);font-size:13px}
+.right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:4px;flex-wrap:wrap}
+.tab{border:0;background:none;color:var(--muted);padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.tab.on{background:var(--amber);color:var(--on-amber)}
+.pill{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 14px;font-size:13.5px}
+.pill:hover{border-color:var(--teal)}
+#banner{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--alt);border:1px solid var(--red);color:var(--text);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:14px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px}
+.intro{margin-bottom:20px}.intro h2{font-size:28px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12.5px;color:var(--muted)}
+select,input[type=text],input[type=password],textarea{width:100%;background:var(--alt);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+textarea{min-height:130px;resize:vertical}
+.btn{background:var(--amber);color:var(--on-amber);border:0;border-radius:8px;padding:11px 20px;font-weight:600}
+.btn:disabled{opacity:.6}
+.mic{background:var(--alt);border:1px solid var(--border);border-radius:999px;padding:7px 14px}
+.mic.live{background:var(--red);border-color:var(--red);color:#fff}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.msg{font-size:13.5px;color:var(--muted)}.msg.bad{color:var(--red)}
+.landing{max-width:720px;margin:34px auto;text-align:center}.landing h2{font-size:28px}
+.langs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0 28px}
+.langs.left{justify-content:flex-start;margin:10px 0 0}
+.lang{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:14px}
+.lang.on{background:var(--amber);border-color:var(--amber);color:var(--on-amber)}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.role{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:34px 18px;transition:.18s}
+.role:hover{border-color:var(--amber);transform:translateY(-2px)}
+.role i{font-style:normal;font-size:38px;display:block;margin-bottom:8px}
+.login{max-width:380px;margin:34px auto}
+.reveal{margin-top:18px;border-top:1px solid var(--border);padding-top:14px}
+.kv{display:flex;gap:10px;padding:5px 0;font-size:14px}.kv b{color:var(--muted);font-weight:400;min-width:110px}
+.dots{display:inline-flex;gap:3px}.dots span{width:9px;height:9px;border-radius:50%;background:var(--border)}.dots span.on{background:var(--red)}
+.item{border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:10px;background:var(--surface)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.meta{font-size:12.5px;color:var(--muted);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+.badge{font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+.badge.hi{color:var(--amber);border-color:var(--amber)}.badge.mid{color:var(--teal);border-color:var(--teal)}
+.stats{display:flex;flex-wrap:wrap;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:22px}
+.stat{flex:1;min-width:140px;padding:16px 20px;border-right:1px solid var(--border);background:var(--surface)}
+.stat:last-child{border:0}.stat .n{font-size:26px;color:var(--amber);font-weight:600}.stat .l{font-size:12.5px;color:var(--muted)}
+.sec{font-size:14px;color:var(--muted);margin:0 0 12px}
+.heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:26px}
+.cell{border-radius:10px;padding:12px 14px;color:#fff}.cell small{display:block;opacity:.8;margin-top:3px}
+.cols{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
+.bar{height:6px;background:var(--alt);border-radius:4px;margin:9px 0;overflow:hidden}.bar i{display:block;height:100%;background:var(--teal)}
+.bar.a i{background:var(--amber)}
+.link{background:none;border:0;color:var(--muted);font-size:12.5px;text-decoration:underline;padding:0}
+.brief{background:none;border:1px solid var(--border);color:var(--amber);border-radius:6px;padding:5px 10px;font-size:12.5px;margin-top:8px}
+.srow{display:flex;align-items:center;gap:10px;font-size:13.5px;margin-bottom:9px}.srow span:nth-child(2){width:120px;color:var(--muted)}.srow .bar{flex:1;margin:0}
+.feed{padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px}.feed:last-child{border:0}
+.empty{color:var(--muted);padding:16px 0}
+.two{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:start}
+.steps ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.steps li{display:flex;gap:12px}
+.steps .n{width:26px;height:26px;border-radius:50%;background:var(--alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:var(--muted);transition:.2s}
+.steps li.done .n{background:var(--teal);border-color:var(--teal);color:#fff}
+.steps b{font-size:14.5px}.steps p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+@media(max-width:760px){.roles,.cols,.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><h1>Setu</h1><span data-i18n="tag"></span></div>
+    <div class="right">
+      <div class="tabs" id="tabs" hidden></div>
+      <button class="pill" id="theme-btn" type="button" aria-label="Theme"></button>
+      <button class="pill" id="exit-btn" type="button" data-i18n="switch" hidden></button>
+    </div>
+  </div>
+  <div id="banner" hidden><span id="banner-text"></span><button class="pill" id="banner-retry" type="button">↻</button></div>
+
+  <section class="view on" id="view-landing"><div class="landing">
+    <h2 data-i18n="welcome"></h2>
+    <div class="langs"></div>
+    <div class="roles">
+      <button class="role" id="go-user" type="button"><i>🏘️</i><h3 data-i18n="user"></h3></button>
+      <button class="role" id="go-admin" type="button"><i>🏛️</i><h3 data-i18n="admin"></h3></button>
+    </div>
+    <button class="link" id="about-link" type="button" style="margin-top:20px" data-i18n="tAbout"></button>
+  </div></section>
+
+  <section class="view" id="view-login"><div class="card login">
+    <h2 data-i18n="admin" style="margin-bottom:16px"></h2>
+    <div class="field"><label for="lg-id" data-i18n="uid"></label><input id="lg-id" type="text" autocomplete="username"></div>
+    <div class="field"><label for="lg-pw" data-i18n="pw"></label><input id="lg-pw" type="password" autocomplete="current-password"></div>
+    <div class="row"><button class="btn" id="lg-btn" type="button" data-i18n="login"></button><button class="link" id="lg-back" type="button">←</button></div>
+    <p class="msg bad" id="lg-err"></p>
+  </div></section>
+
+  <section class="view" id="view-citizen">
+    <div class="intro"><h2 data-i18n="hCit"></h2></div>
+    <div class="two"><div class="card">
+      <div class="field"><label for="region" data-i18n="region"></label><select id="region"></select></div>
+      <div class="field"><label for="text" data-i18n="msg"></label><textarea id="text"></textarea></div>
+      <button class="mic" id="mic" type="button"></button>
+      <div class="row"><button class="btn" id="send" type="button" data-i18n="send"></button><span class="msg" id="status"></span></div>
+      <div class="reveal" id="reveal" hidden></div>
+    </div>
+    <aside class="card steps"><h3 data-i18n="hw" style="font-size:18px;margin-bottom:18px"></h3><ol id="steps"><li><span class="n">1</span><div><b data-i18n="p1t"></b><p data-i18n="p1d"></p></div></li><li><span class="n">2</span><div><b data-i18n="p2t"></b><p data-i18n="p2d"></p></div></li><li><span class="n">3</span><div><b data-i18n="p3t"></b><p data-i18n="p3d"></p></div></li><li><span class="n">4</span><div><b data-i18n="p4t"></b><p data-i18n="p4d"></p></div></li></ol></aside></div>
+  </section>
+
+  <section class="view" id="view-mine"><div class="intro"><h2 data-i18n="tMine"></h2></div><div id="mine-list"></div></section>
+
+  <section class="view" id="view-dash">
+    <div class="intro"><h2 data-i18n="tDash"></h2><p class="msg" id="health-badge" style="margin-top:4px"></p></div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="st-total">0</div><div class="l" data-i18n="s1"></div></div>
+      <div class="stat"><div class="n" id="st-regions">0</div><div class="l" data-i18n="s2"></div></div>
+      <div class="stat"><div class="n" id="st-sector">—</div><div class="l" data-i18n="s3"></div></div>
+    </div>
+    <p class="sec" data-i18n="hot"></p><div class="heat" id="heat"></div>
+    <div class="cols">
+      <div><p class="sec" data-i18n="top"></p><div id="ranks"></div></div>
+      <div>
+        <div class="card" style="margin-bottom:20px"><p class="sec" data-i18n="bysec"></p><div id="sectors"></div></div>
+        <div class="card"><p class="sec" data-i18n="recent"></p><div id="feed"></div></div>
+      </div>
+    </div>
+    <div class="row" style="justify-content:flex-end;margin-top:24px"><button class="link" id="clear" type="button" data-i18n="clear"></button></div>
+  </section>
+
+  <section class="view" id="view-set">
+    <div class="intro"><h2 data-i18n="tSet"></h2></div>
+    <div class="card" style="max-width:560px">🌐<div class="langs left"></div></div>
+  </section>
+
+  <section class="view" id="view-about">
+    <button class="link" id="about-back" type="button" style="margin-bottom:14px">←</button>
+    <div class="intro"><h2 data-i18n="tAbout"></h2></div>
+    <div class="card" style="max-width:720px">
+      <p data-i18n="aboutP1" style="margin:0 0 14px"></p>
+      <p data-i18n="aboutP2" style="margin:0 0 14px"></p>
+      <ul style="margin:0;padding-left:20px;line-height:1.9;color:var(--muted);font-size:14px">
+        <li data-i18n="aboutL1"></li>
+        <li data-i18n="aboutL2"></li>
+        <li data-i18n="aboutL3"></li>
+        <li data-i18n="aboutL4"></li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+const T = {
+en:{hw:"How your complaint is handled",p1t:"Choose your region",p1d:"Pick the district or city where the problem is.",p2t:"Describe the problem",p2d:"Type or speak in any language, even mixed.",p3t:"Send your request",p3d:"Setu reads it, translates it, and marks its sector and urgency.",p4t:"Track its status",p4d:"Open My requests to see if it is flagged, under review or logged.",tag:"Citizen demand → national priority, in any language",welcome:"Welcome to Setu — choose how to continue",user:"User portal",admin:"Admin portal",tCit:"Citizen portal",tMine:"My requests",tDash:"Policymaker view",tSet:"Settings",hCit:"Tell us what your area needs.",region:"Your region",selReg:"Select your region",msg:"Type or speak what you'd tell an official",send:"Send request",speak:"🎤 Speak",fill:"Pick your region and write your message first.",saved:"Saved and sent to the national map.",under:"Understood as",sector:"Sector",urg:"Urgency",none:"Nothing here yet.",s1:"Requests received",s2:"Regions reporting",s3:"Top-need sector",hot:"Demand hotspots",top:"Top recommended projects",bysec:"Demand by sector",recent:"Recent citizen requests",brief:"Generate policy brief",clear:"Clear demo data",uid:"User ID",pw:"Password",login:"Log in",bad:"Wrong user ID or password.",err:"Couldn't reach the server.",switch:"Switch portal",tAbout:"About Setu",aboutP1:"Setu is a multilingual, AI-powered platform that turns citizen requests — spoken, typed or sent over WhatsApp — into ranked infrastructure priorities for policymakers.",aboutP2:"It reads a complaint in whatever language it's written or spoken in, scores its urgency against a fixed rubric, and combines it with demographic, infrastructure and public-investment data to surface where the need is greatest.",aboutL1:"Multilingual by design — English, Hindi, Telugu, Kannada, Tamil and Malayalam today, more pluggable later.",aboutL2:"Every request is stored in a real database, not just kept in your browser.",aboutL3:"Citizens track their own request's status; policymakers see it ranked nationally.",aboutL4:"Built as a prototype for the Build with AI: Code for Communities hackathon."},
+hi:{hw:"आपकी शिकायत कैसे निपटाई जाती है",p1t:"अपना क्षेत्र चुनें",p1d:"वह ज़िला या शहर चुनें जहाँ समस्या है।",p2t:"समस्या बताएँ",p2d:"किसी भी भाषा में लिखें या बोलें, मिली-जुली भाषा भी चलेगी।",p3t:"अनुरोध भेजें",p3d:"सेतु इसे पढ़ता है, अनुवाद करता है और विभाग व तात्कालिकता तय करता है।",p4t:"स्थिति देखें",p4d:"मेरे अनुरोध खोलकर देखें कि शिकायत प्राथमिकता में है, समीक्षा में है या दर्ज हुई है।",tag:"नागरिकों की माँग → राष्ट्रीय प्राथमिकता, किसी भी भाषा में",welcome:"सेतु में आपका स्वागत है — आगे कैसे बढ़ना है चुनें",user:"उपयोगकर्ता पोर्टल",admin:"एडमिन पोर्टल",tCit:"नागरिक पोर्टल",tMine:"मेरे अनुरोध",tDash:"नीति-निर्माता दृश्य",tSet:"सेटिंग्स",hCit:"बताइए आपके क्षेत्र को क्या चाहिए।",region:"आपका क्षेत्र",selReg:"अपना क्षेत्र चुनें",msg:"जो आप किसी अधिकारी से कहते, उसे लिखें या बोलें",send:"अनुरोध भेजें",speak:"🎤 बोलें",fill:"पहले अपना क्षेत्र चुनें और संदेश लिखें।",saved:"सहेजा गया और राष्ट्रीय मानचित्र पर भेजा गया।",under:"समझा गया",sector:"विभाग",urg:"तात्कालिकता",none:"अभी यहाँ कुछ नहीं है।",s1:"प्राप्त अनुरोध",s2:"रिपोर्ट करने वाले क्षेत्र",s3:"सबसे अधिक ज़रूरत वाला विभाग",hot:"माँग के हॉटस्पॉट",top:"शीर्ष अनुशंसित परियोजनाएँ",bysec:"विभाग के अनुसार माँग",recent:"हाल के नागरिक अनुरोध",brief:"नीति संक्षेप बनाएँ",clear:"डेमो डेटा हटाएँ",uid:"यूज़र आईडी",pw:"पासवर्ड",login:"लॉग इन करें",bad:"यूज़र आईडी या पासवर्ड गलत है।",err:"सर्वर से संपर्क नहीं हो सका।",switch:"पोर्टल बदलें",tAbout:"सेतु के बारे में",aboutP1:"सेतु एक बहुभाषी, AI-संचालित मंच है जो नागरिकों के अनुरोधों — बोले गए, टाइप किए गए या व्हाट्सएप पर भेजे गए — को नीति-निर्माताओं के लिए प्राथमिकता वाली बुनियादी ढांचा परियोजनाओं में बदलता है।",aboutP2:"यह शिकायत को जिस भी भाषा में लिखा या बोला गया है उसमें पढ़ता है, एक तय मानदंड के अनुसार उसकी तात्कालिकता आंकता है, और जनसांख्यिकीय, बुनियादी ढांचे व सार्वजनिक निवेश डेटा के साथ जोड़कर दिखाता है कि सबसे अधिक ज़रूरत कहाँ है।",aboutL1:"डिज़ाइन से बहुभाषी — आज हिन्दी, तेलुगु, कन्नड़, तमिल, मलयालम और अंग्रेज़ी में, आगे और भाषाएं जोड़ी जा सकती हैं।",aboutL2:"हर अनुरोध एक असली डेटाबेस में सहेजा जाता है, सिर्फ़ आपके ब्राउज़र में नहीं।",aboutL3:"नागरिक अपने अनुरोध की स्थिति देखते हैं; नीति-निर्माता इसे राष्ट्रीय स्तर पर रैंक किया हुआ देखते हैं।",aboutL4:"यह Build with AI: Code for Communities हैकथॉन के लिए बनाया गया एक प्रोटोटाइप है।"},
+te:{hw:"మీ ఫిర్యాదు ఎలా పరిష్కరించబడుతుంది",p1t:"మీ ప్రాంతాన్ని ఎంచుకోండి",p1d:"సమస్య ఉన్న జిల్లా లేదా నగరాన్ని ఎంచుకోండి.",p2t:"సమస్యను వివరించండి",p2d:"ఏ భాషలోనైనా, కలగలిపినా సరే, టైప్ చేయండి లేదా మాట్లాడండి.",p3t:"అభ్యర్థనను పంపండి",p3d:"సేతు దాన్ని చదివి, అనువదించి, రంగం మరియు అత్యవసరతను నిర్ణయిస్తుంది.",p4t:"స్థితిని చూడండి",p4d:"నా అభ్యర్థనలు తెరిచి అది ప్రాధాన్యతలో ఉందా, సమీక్షలో ఉందా లేదా నమోదైందా చూడండి.",tag:"పౌరుల డిమాండ్ → జాతీయ ప్రాధాన్యత, ఏ భాషలోనైనా",welcome:"సేతుకు స్వాగతం — ఎలా కొనసాగాలో ఎంచుకోండి",user:"యూజర్ పోర్టల్",admin:"అడ్మిన్ పోర్టల్",tCit:"పౌర పోర్టల్",tMine:"నా అభ్యర్థనలు",tDash:"పాలసీ మేకర్ వీక్షణ",tSet:"సెట్టింగ్స్",hCit:"మీ ప్రాంతానికి ఏమి కావాలో చెప్పండి.",region:"మీ ప్రాంతం",selReg:"మీ ప్రాంతాన్ని ఎంచుకోండి",msg:"అధికారికి చెప్పాలనుకున్నది టైప్ చేయండి లేదా మాట్లాడండి",send:"అభ్యర్థన పంపండి",speak:"🎤 మాట్లాడండి",fill:"ముందుగా మీ ప్రాంతాన్ని ఎంచుకుని సందేశం రాయండి.",saved:"సేవ్ చేయబడింది, జాతీయ మ్యాప్‌కు పంపబడింది.",under:"అర్థం చేసుకున్నది",sector:"రంగం",urg:"అత్యవసరత",none:"ఇక్కడ ఇంకా ఏమీ లేదు.",s1:"అందిన అభ్యర్థనలు",s2:"నివేదించిన ప్రాంతాలు",s3:"అత్యధిక అవసరమున్న రంగం",hot:"డిమాండ్ హాట్‌స్పాట్‌లు",top:"అగ్ర సిఫార్సు ప్రాజెక్టులు",bysec:"రంగాల వారీ డిమాండ్",recent:"ఇటీవలి పౌర అభ్యర్థనలు",brief:"పాలసీ బ్రీఫ్ రూపొందించండి",clear:"డెమో డేటా తొలగించండి",uid:"యూజర్ ID",pw:"పాస్‌వర్డ్",login:"లాగిన్",bad:"యూజర్ ID లేదా పాస్‌వర్డ్ తప్పు.",err:"సర్వర్‌ను చేరుకోలేకపోయాము.",switch:"పోర్టల్ మార్చండి",tAbout:"సేతు గురించి",aboutP1:"సేతు అనేది బహుభాషా, AI ఆధారిత వేదిక, ఇది పౌరుల అభ్యర్థనలను — మాట్లాడినవి, టైప్ చేసినవి లేదా వాట్సాప్ ద్వారా పంపినవి — విధాన నిర్ణేతల కోసం ప్రాధాన్యత గల మౌలిక సదుపాయాల ప్రాజెక్టులుగా మారుస్తుంది.",aboutP2:"ఇది ఫిర్యాదును అది వ్రాయబడిన లేదా మాట్లాడిన భాషలోనే చదివి, నిర్ణీత ప్రమాణం ప్రకారం దాని తీవ్రతను అంచనా వేసి, జనాభా, మౌలిక సదుపాయాలు మరియు ప్రభుత్వ పెట్టుబడి డేటాతో కలిపి ఎక్కడ అత్యధిక అవసరం ఉందో చూపిస్తుంది.",aboutL1:"రూపకల్పన నుండే బహుభాషా — నేడు తెలుగు, హిందీ, కన్నడ, తమిళం, మలయాళం మరియు ఇంగ్లీష్‌లో, భవిష్యత్తులో మరిన్ని భాషలు జోడించవచ్చు.",aboutL2:"ప్రతి అభ్యర్థన నిజమైన డేటాబేస్‌లో నిల్వ చేయబడుతుంది, కేవలం మీ బ్రౌజర్‌లో కాదు.",aboutL3:"పౌరులు తమ అభ్యర్థన స్థితిని చూస్తారు; విధాన నిర్ణేతలు దీన్ని జాతీయ స్థాయిలో ర్యాంక్ చేయబడినట్లు చూస్తారు.",aboutL4:"ఇది Build with AI: Code for Communities హ్యాకథాన్ కోసం రూపొందించిన ప్రోటోటైప్."},
+kn:{hw:"ನಿಮ್ಮ ದೂರನ್ನು ಹೇಗೆ ನಿರ್ವಹಿಸಲಾಗುತ್ತದೆ",p1t:"ನಿಮ್ಮ ಪ್ರದೇಶವನ್ನು ಆರಿಸಿ",p1d:"ಸಮಸ್ಯೆ ಇರುವ ಜಿಲ್ಲೆ ಅಥವಾ ನಗರವನ್ನು ಆರಿಸಿ.",p2t:"ಸಮಸ್ಯೆಯನ್ನು ವಿವರಿಸಿ",p2d:"ಯಾವುದೇ ಭಾಷೆಯಲ್ಲಿ, ಮಿಶ್ರವಾದರೂ ಸರಿ, ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಿ.",p3t:"ವಿನಂತಿ ಕಳುಹಿಸಿ",p3d:"ಸೇತು ಅದನ್ನು ಓದಿ, ಅನುವಾದಿಸಿ, ವಲಯ ಮತ್ತು ತುರ್ತನ್ನು ನಿರ್ಧರಿಸುತ್ತದೆ.",p4t:"ಸ್ಥಿತಿಯನ್ನು ನೋಡಿ",p4d:"ನನ್ನ ವಿನಂತಿಗಳನ್ನು ತೆರೆದು ಅದು ಆದ್ಯತೆಯಲ್ಲಿದೆಯೇ, ಪರಿಶೀಲನೆಯಲ್ಲಿದೆಯೇ ಅಥವಾ ದಾಖಲಾಗಿದೆಯೇ ಎಂದು ನೋಡಿ.",tag:"ನಾಗರಿಕರ ಬೇಡಿಕೆ → ರಾಷ್ಟ್ರೀಯ ಆದ್ಯತೆ, ಯಾವುದೇ ಭಾಷೆಯಲ್ಲಿ",welcome:"ಸೇತುಗೆ ಸ್ವಾಗತ — ಮುಂದುವರಿಯುವ ವಿಧಾನವನ್ನು ಆರಿಸಿ",user:"ಬಳಕೆದಾರ ಪೋರ್ಟಲ್",admin:"ಅಡ್ಮಿನ್ ಪೋರ್ಟಲ್",tCit:"ನಾಗರಿಕ ಪೋರ್ಟಲ್",tMine:"ನನ್ನ ವಿನಂತಿಗಳು",tDash:"ನೀತಿನಿರ್ಮಾಪಕರ ನೋಟ",tSet:"ಸೆಟ್ಟಿಂಗ್‌ಗಳು",hCit:"ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕೆ ಏನು ಬೇಕು ಎಂದು ಹೇಳಿ.",region:"ನಿಮ್ಮ ಪ್ರದೇಶ",selReg:"ನಿಮ್ಮ ಪ್ರದೇಶವನ್ನು ಆರಿಸಿ",msg:"ಅಧಿಕಾರಿಗೆ ಹೇಳಲು ಬಯಸುವುದನ್ನು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಮಾತನಾಡಿ",send:"ವಿನಂತಿ ಕಳುಹಿಸಿ",speak:"🎤 ಮಾತನಾಡಿ",fill:"ಮೊದಲು ನಿಮ್ಮ ಪ್ರದೇಶವನ್ನು ಆರಿಸಿ ಮತ್ತು ಸಂದೇಶ ಬರೆಯಿರಿ.",saved:"ಉಳಿಸಲಾಗಿದೆ ಮತ್ತು ರಾಷ್ಟ್ರೀಯ ನಕ್ಷೆಗೆ ಕಳುಹಿಸಲಾಗಿದೆ.",under:"ಅರ್ಥೈಸಿಕೊಂಡಿದ್ದು",sector:"ವಲಯ",urg:"ತುರ್ತು",none:"ಇಲ್ಲಿ ಇನ್ನೂ ಏನೂ ಇಲ್ಲ.",s1:"ಸ್ವೀಕರಿಸಿದ ವಿನಂತಿಗಳು",s2:"ವರದಿ ಮಾಡಿದ ಪ್ರದೇಶಗಳು",s3:"ಹೆಚ್ಚು ಅಗತ್ಯವಿರುವ ವಲಯ",hot:"ಬೇಡಿಕೆಯ ಹಾಟ್‌ಸ್ಪಾಟ್‌ಗಳು",top:"ಪ್ರಮುಖ ಶಿಫಾರಸು ಯೋಜನೆಗಳು",bysec:"ವಲಯವಾರು ಬೇಡಿಕೆ",recent:"ಇತ್ತೀಚಿನ ನಾಗರಿಕ ವಿನಂತಿಗಳು",brief:"ನೀತಿ ಸಂಕ್ಷಿಪ್ತ ರಚಿಸಿ",clear:"ಡೆಮೊ ಡೇಟಾ ತೆರವುಗೊಳಿಸಿ",uid:"ಬಳಕೆದಾರ ID",pw:"ಪಾಸ್‌ವರ್ಡ್",login:"ಲಾಗಿನ್",bad:"ಬಳಕೆದಾರ ID ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ತಪ್ಪಾಗಿದೆ.",err:"ಸರ್ವರ್ ತಲುಪಲಾಗಲಿಲ್ಲ.",switch:"ಪೋರ್ಟಲ್ ಬದಲಿಸಿ",tAbout:"ಸೇತು ಬಗ್ಗೆ",aboutP1:"ಸೇತು ಒಂದು ಬಹುಭಾಷಾ, AI ಆಧಾರಿತ ವೇದಿಕೆಯಾಗಿದ್ದು, ಇದು ನಾಗರಿಕರ ವಿನಂತಿಗಳನ್ನು — ಮಾತನಾಡಿದ, ಟೈಪ್ ಮಾಡಿದ ಅಥವಾ ವಾಟ್ಸಾಪ್ ಮೂಲಕ ಕಳುಹಿಸಿದ — ನೀತಿ ನಿರೂಪಕರಿಗಾಗಿ ಆದ್ಯತೆಯ ಮೂಲಸೌಕರ್ಯ ಯೋಜನೆಗಳಾಗಿ ಪರಿವರ್ತಿಸುತ್ತದೆ.",aboutP2:"ಇದು ದೂರನ್ನು ಅದು ಬರೆದ ಅಥವಾ ಮಾತನಾಡಿದ ಭಾಷೆಯಲ್ಲಿಯೇ ಓದಿ, ನಿಗದಿತ ಮಾನದಂಡದ ಪ್ರಕಾರ ಅದರ ತುರ್ತನ್ನು ಅಂದಾಜಿಸಿ, ಜನಸಂಖ್ಯಾ, ಮೂಲಸೌಕರ್ಯ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಹೂಡಿಕೆ ದತ್ತಾಂಶದೊಂದಿಗೆ ಸೇರಿಸಿ ಎಲ್ಲಿ ಅತಿ ಹೆಚ್ಚು ಅಗತ್ಯವಿದೆ ಎಂದು ತೋರಿಸುತ್ತದೆ.",aboutL1:"ವಿನ್ಯಾಸದಿಂದಲೇ ಬಹುಭಾಷಾ — ಇಂದು ಕನ್ನಡ, ಹಿಂದಿ, ತೆಲುಗು, ತಮಿಳು, ಮಲಯಾಳಂ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ, ಮುಂದೆ ಇನ್ನಷ್ಟು ಭಾಷೆಗಳನ್ನು ಸೇರಿಸಬಹುದು.",aboutL2:"ಪ್ರತಿ ವಿನಂತಿಯನ್ನು ನಿಜವಾದ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ, ಕೇವಲ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಅಲ್ಲ.",aboutL3:"ನಾಗರಿಕರು ತಮ್ಮ ವಿನಂತಿಯ ಸ್ಥಿತಿಯನ್ನು ನೋಡುತ್ತಾರೆ; ನೀತಿ ನಿರೂಪಕರು ಇದನ್ನು ರಾಷ್ಟ್ರೀಯ ಮಟ್ಟದಲ್ಲಿ ಶ್ರೇಣೀಕರಿಸಿದಂತೆ ನೋಡುತ್ತಾರೆ.",aboutL4:"ಇದು Build with AI: Code for Communities ಹ್ಯಾಕಥಾನ್‌ಗಾಗಿ ರಚಿಸಲಾದ ಪ್ರೋಟೋಟೈಪ್."},
+ta:{hw:"உங்கள் புகார் எவ்வாறு கையாளப்படுகிறது",p1t:"உங்கள் பகுதியைத் தேர்ந்தெடுக்கவும்",p1d:"பிரச்சினை உள்ள மாவட்டம் அல்லது நகரத்தைத் தேர்ந்தெடுக்கவும்.",p2t:"பிரச்சினையை விவரிக்கவும்",p2d:"எந்த மொழியிலும், கலந்தாலும், தட்டச்சு செய்யவும் அல்லது பேசவும்.",p3t:"கோரிக்கையை அனுப்பவும்",p3d:"சேது அதைப் படித்து, மொழிபெயர்த்து, துறையையும் அவசரத்தையும் குறிக்கிறது.",p4t:"நிலையைப் பார்க்கவும்",p4d:"என் கோரிக்கைகளைத் திறந்து அது முன்னுரிமையில் உள்ளதா, மதிப்பாய்வில் உள்ளதா அல்லது பதிவாகியுள்ளதா எனப் பார்க்கவும்.",tag:"குடிமக்கள் தேவை → தேசிய முன்னுரிமை, எந்த மொழியிலும்",welcome:"சேதுவுக்கு வரவேற்கிறோம் — தொடரும் வழியைத் தேர்ந்தெடுக்கவும்",user:"பயனர் தளம்",admin:"நிர்வாகி தளம்",tCit:"குடிமக்கள் தளம்",tMine:"என் கோரிக்கைகள்",tDash:"கொள்கை வகுப்பாளர் பார்வை",tSet:"அமைப்புகள்",hCit:"உங்கள் பகுதிக்கு என்ன தேவை என்று சொல்லுங்கள்.",region:"உங்கள் பகுதி",selReg:"உங்கள் பகுதியைத் தேர்ந்தெடுக்கவும்",msg:"அதிகாரியிடம் சொல்ல விரும்புவதை தட்டச்சு செய்யவும் அல்லது பேசவும்",send:"கோரிக்கையை அனுப்பு",speak:"🎤 பேசுங்கள்",fill:"முதலில் உங்கள் பகுதியைத் தேர்ந்தெடுத்து செய்தியை எழுதவும்.",saved:"சேமிக்கப்பட்டு தேசிய வரைபடத்திற்கு அனுப்பப்பட்டது.",under:"புரிந்துகொண்டது",sector:"துறை",urg:"அவசரம்",none:"இங்கே இன்னும் எதுவும் இல்லை.",s1:"பெறப்பட்ட கோரிக்கைகள்",s2:"தெரிவித்த பகுதிகள்",s3:"அதிகத் தேவையுள்ள துறை",hot:"தேவை மையங்கள்",top:"முதன்மைப் பரிந்துரைத் திட்டங்கள்",bysec:"துறை வாரியான தேவை",recent:"சமீபத்திய குடிமக்கள் கோரிக்கைகள்",brief:"கொள்கைச் சுருக்கம் உருவாக்கு",clear:"டெமோ தரவை நீக்கு",uid:"பயனர் ஐடி",pw:"கடவுச்சொல்",login:"உள்நுழை",bad:"பயனர் ஐடி அல்லது கடவுச்சொல் தவறு.",err:"சேவையகத்தை அடைய முடியவில்லை.",switch:"தளத்தை மாற்று",tAbout:"சேது பற்றி",aboutP1:"சேது என்பது ஒரு பன்மொழி, AI-அடிப்படையிலான தளமாகும், இது குடிமக்களின் கோரிக்கைகளை — பேசப்பட்ட, தட்டச்சு செய்யப்பட்ட அல்லது வாட்ஸ்அப் மூலம் அனுப்பப்பட்ட — கொள்கை வகுப்பாளர்களுக்கான முன்னுரிமை உள்கட்டமைப்பு திட்டங்களாக மாற்றுகிறது.",aboutP2:"இது புகாரை அது எழுதப்பட்ட அல்லது பேசப்பட்ட மொழியிலேயே படித்து, நிர்ணயிக்கப்பட்ட அளவுகோலின்படி அதன் அவசரத்தை மதிப்பிட்டு, மக்கள்தொகை, உள்கட்டமைப்பு மற்றும் அரசு முதலீட்டுத் தரவுடன் இணைத்து எங்கு அதிக தேவை உள்ளது எனக் காட்டுகிறது.",aboutL1:"வடிவமைப்பிலிருந்தே பன்மொழி — இன்று தமிழ், இந்தி, தெலுங்கு, கன்னடம், மலையாளம் மற்றும் ஆங்கிலத்தில், எதிர்காலத்தில் மேலும் மொழிகள் சேர்க்கப்படலாம்.",aboutL2:"ஒவ்வொரு கோரிக்கையும் ஒரு உண்மையான தரவுத்தளத்தில் சேமிக்கப்படுகிறது, உங்கள் உலாவியில் மட்டும் அல்ல.",aboutL3:"குடிமக்கள் தங்கள் கோரிக்கையின் நிலையைப் பார்க்கிறார்கள்; கொள்கை வகுப்பாளர்கள் இதை தேசிய அளவில் தரவரிசைப்படுத்தப்பட்டதாகப் பார்க்கிறார்கள்.",aboutL4:"இது Build with AI: Code for Communities ஹேக்கத்தானுக்காக உருவாக்கப்பட்ட முன்மாதிரி."},
+ml:{hw:"നിങ്ങളുടെ പരാതി എങ്ങനെ കൈകാര്യം ചെയ്യുന്നു",p1t:"നിങ്ങളുടെ പ്രദേശം തിരഞ്ഞെടുക്കുക",p1d:"പ്രശ്നമുള്ള ജില്ലയോ നഗരമോ തിരഞ്ഞെടുക്കുക.",p2t:"പ്രശ്നം വിവരിക്കുക",p2d:"ഏത് ഭാഷയിലും, കലർന്നാലും, ടൈപ്പ് ചെയ്യുകയോ സംസാരിക്കുകയോ ചെയ്യുക.",p3t:"അപേക്ഷ അയയ്ക്കുക",p3d:"സേതു അത് വായിച്ച് വിവർത്തനം ചെയ്ത് മേഖലയും അടിയന്തരതയും നിശ്ചയിക്കുന്നു.",p4t:"നില പരിശോധിക്കുക",p4d:"എന്റെ അപേക്ഷകൾ തുറന്ന് അത് മുൻഗണനയിലാണോ, പരിശോധനയിലാണോ, രേഖപ്പെടുത്തിയതാണോ എന്ന് നോക്കുക.",tag:"പൗരന്മാരുടെ ആവശ്യം → ദേശീയ മുൻഗണന, ഏത് ഭാഷയിലും",welcome:"സേതുവിലേക്ക് സ്വാഗതം — തുടരേണ്ട വിധം തിരഞ്ഞെടുക്കുക",user:"ഉപയോക്തൃ പോർട്ടൽ",admin:"അഡ്മിൻ പോർട്ടൽ",tCit:"പൗര പോർട്ടൽ",tMine:"എന്റെ അപേക്ഷകൾ",tDash:"നയരൂപകർത്താവിന്റെ കാഴ്ച",tSet:"ക്രമീകരണങ്ങൾ",hCit:"നിങ്ങളുടെ പ്രദേശത്തിന് എന്താണ് വേണ്ടതെന്ന് പറയൂ.",region:"നിങ്ങളുടെ പ്രദേശം",selReg:"നിങ്ങളുടെ പ്രദേശം തിരഞ്ഞെടുക്കുക",msg:"ഉദ്യോഗസ്ഥനോട് പറയാനുള്ളത് ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ സംസാരിക്കുക",send:"അപേക്ഷ അയയ്ക്കുക",speak:"🎤 സംസാരിക്കുക",fill:"ആദ്യം പ്രദേശം തിരഞ്ഞെടുത്ത് സന്ദേശം എഴുതുക.",saved:"സേവ് ചെയ്ത് ദേശീയ മാപ്പിലേക്ക് അയച്ചു.",under:"മനസ്സിലാക്കിയത്",sector:"മേഖല",urg:"അടിയന്തരത",none:"ഇവിടെ ഇതുവരെ ഒന്നുമില്ല.",s1:"ലഭിച്ച അപേക്ഷകൾ",s2:"റിപ്പോർട്ട് ചെയ്ത പ്രദേശങ്ങൾ",s3:"ഏറ്റവും ആവശ്യമുള്ള മേഖല",hot:"ആവശ്യത്തിന്റെ ഹോട്ട്‌സ്പോട്ടുകൾ",top:"മുൻനിര ശുപാർശിത പദ്ധതികൾ",bysec:"മേഖല തിരിച്ചുള്ള ആവശ്യം",recent:"സമീപകാല പൗര അപേക്ഷകൾ",brief:"നയ സംക്ഷിപ്തം തയ്യാറാക്കുക",clear:"ഡെമോ ഡാറ്റ മായ്ക്കുക",uid:"യൂസർ ഐഡി",pw:"പാസ്‌വേഡ്",login:"ലോഗിൻ",bad:"യൂസർ ഐഡിയോ പാസ്‌വേഡോ തെറ്റാണ്.",err:"സെർവറുമായി ബന്ധപ്പെടാനായില്ല.",switch:"പോർട്ടൽ മാറ്റുക",tAbout:"സേതുവിനെക്കുറിച്ച്",aboutP1:"സേതു എന്നത് ഒരു ബഹുഭാഷാ, AI അധിഷ്ഠിത പ്ലാറ്റ്‌ഫോമാണ്, ഇത് പൗരന്മാരുടെ അഭ്യർത്ഥനകളെ — സംസാരിച്ചതോ ടൈപ്പ് ചെയ്തതോ വാട്സ്ആപ്പ് വഴി അയച്ചതോ — നയരൂപകർത്താക്കൾക്കായി മുൻഗണനാ അടിസ്ഥാന സൗകര്യ പദ്ധതികളാക്കി മാറ്റുന്നു.",aboutP2:"ഇത് പരാതി എഴുതിയതോ സംസാരിച്ചതോ ആയ ഭാഷയിൽ തന്നെ വായിച്ച്, നിശ്ചിത മാനദണ്ഡമനുസരിച്ച് അതിന്റെ അടിയന്തിരത വിലയിരുത്തി, ജനസംഖ്യാ, അടിസ്ഥാന സൗകര്യ, പൊതു നിക്ഷേപ വിവരങ്ങളുമായി ചേർത്ത് എവിടെയാണ് ഏറ്റവും കൂടുതൽ ആവശ്യം എന്ന് കാണിക്കുന്നു.",aboutL1:"രൂപകൽപ്പന മുതലേ ബഹുഭാഷാ — ഇന്ന് മലയാളം, ഹിന്ദി, തെലുങ്ക്, കന്നഡ, തമിഴ്, ഇംഗ്ലീഷ് എന്നിവയിൽ, ഭാവിയിൽ കൂടുതൽ ഭാഷകൾ ചേർക്കാം.",aboutL2:"ഓരോ അഭ്യർത്ഥനയും ഒരു യഥാർത്ഥ ഡാറ്റാബേസിൽ സൂക്ഷിക്കുന്നു, നിങ്ങളുടെ ബ്രൗസറിൽ മാത്രമല്ല.",aboutL3:"പൗരന്മാർ അവരുടെ അഭ്യർത്ഥനയുടെ നില കാണുന്നു; നയരൂപകർത്താക്കൾ ഇത് ദേശീയ തലത്തിൽ റാങ്ക് ചെയ്തതായി കാണുന്നു.",aboutL4:"ഇത് Build with AI: Code for Communities ഹാക്കത്തോണിനായി നിർമ്മിച്ച ഒരു പ്രോട്ടോടൈപ്പ് ആണ്."}
+  };
+const API = location.protocol === "file:" ? "http://127.0.0.1:8000" : "";
+const LANGS = {en:"English",hi:"हिन्दी",te:"తెలుగు",kn:"ಕನ್ನಡ",ta:"தமிழ்",ml:"മലയാളം"};
+const ICON = {"Water & sanitation":"💧","Roads & transport":"🚗","Healthcare":"🏥","Electricity":"⚡","Education":"🎓","Public safety":"🚨","Other":"📌"};
+const TABS = {user:["citizen","mine","about","set"], admin:["dash","about","set"]};
+const TABKEY = {citizen:"tCit", mine:"tMine", dash:"tDash", set:"tSet", about:"tAbout"};
+const state = {lang:"en", role:null, token:null, view:"landing", voice:false, sent:false};
+const $ = id => document.getElementById(id);
+const t = k => (T[state.lang] && T[state.lang][k]) || T.en[k] || k;
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs||{})){
+    if(k==="class") e.className = v; else if(k.startsWith("on")) e[k] = v; else e.setAttribute(k,v);
+  }
+  kids.flat().forEach(c => e.append(c instanceof Node ? c : document.createTextNode(c==null ? "" : String(c))));
+  return e;
+}
+function banner(msg, retry){
+  $("banner-text").textContent = msg; $("banner").hidden = false;
+  $("banner-retry").onclick = () => { $("banner").hidden = true; retry && retry(); };
+}
+window.addEventListener("error", e => banner(e.message));
+
+async function api(path, opt = {}){
+  const headers = {"Content-Type":"application/json"};
+  if(opt.auth && state.token) headers.Authorization = "Bearer " + state.token;
+  let res;
+  try{ res = await fetch(API + path, {method:opt.method||"GET", headers, body:opt.body ? JSON.stringify(opt.body) : undefined}); }
+  catch(e){ throw new Error(t("err")); }
+  if(!res.ok){
+    let d = ""; try{ d = (await res.json()).detail; }catch(e){}
+    const err = new Error(d || ("HTTP " + res.status)); err.status = res.status; throw err;
+  }
+  return res.json();
+}
+
+/* ---------- navigation ---------- */
+function show(v){
+  state.view = v;
+  document.querySelectorAll(".view").forEach(x => x.classList.toggle("on", x.id === "view-" + v));
+  $("exit-btn").hidden = !state.role;
+  $("banner").hidden = true;
+  renderTabs();
+  if(v==="citizen") loadRegions();
+  if(v==="mine") loadMine();
+  if(v==="dash") loadDash();
+}
+function renderTabs(){
+  const list = state.role ? TABS[state.role] : [];
+  const tabs = $("tabs"); tabs.hidden = !list.length; tabs.innerHTML = "";
+  list.forEach(k => tabs.append(h("button", {class:"tab"+(k===state.view?" on":""), type:"button", onclick:()=>show(k)}, t(TABKEY[k]))));
+}
+function logout(to){ state.role = null; state.token = null; show(to || "landing"); }
+
+/* ---------- language & theme ---------- */
+function setLang(l){
+  state.lang = T[l] ? l : "en"; store.set("lang", state.lang); document.documentElement.lang = state.lang;
+  document.querySelectorAll("[data-i18n]").forEach(e => { e.textContent = t(e.dataset.i18n); });
+  document.querySelectorAll(".langs").forEach(box => {
+    box.innerHTML = "";
+    Object.entries(LANGS).forEach(([c,n]) => box.append(h("button", {class:"lang"+(c===state.lang?" on":""), type:"button", onclick:()=>setLang(c)}, n)));
+  });
+  $("mic").textContent = SR ? t("speak") : "🎤 ✕";
+  const first = $("region").options[0]; if(first && !first.value) first.textContent = t("selReg");
+  renderTabs();
+  if(state.view==="mine") loadMine();
+  if(state.view==="dash") loadDash();
+}
+function setTheme(m){
+  document.documentElement.dataset.theme = m; store.set("theme", m);
+  $("theme-btn").textContent = m==="light" ? "🌙" : "☀️";
+}
+
+/* ---------- citizen portal ---------- */
+function updateSteps(){
+  const done = [state.sent || !!$("region").value, state.sent || !!$("text").value.trim(), state.sent, false];
+  document.querySelectorAll("#steps li").forEach((li, i) => li.classList.toggle("done", done[i]));
+}
+async function loadRegions(){
+  const sel = $("region");
+  if(sel.options.length > 1) return;
+  sel.innerHTML = ""; sel.append(h("option", {value:""}, t("selReg")));
+  try{
+    (await api("/api/regions?country_code=IN")).forEach(r => sel.append(h("option", {value:r.name}, r.name)));
+  }catch(e){ banner(e.message, loadRegions); }
+}
+function citizenId(){
+  let id = store.get("citizen-id");
+  if(!id){ id = (crypto.randomUUID ? crypto.randomUUID() : "c-" + Math.random().toString(36).slice(2) + Date.now()); store.set("citizen-id", id); }
+  return id;
+}
+async function sendRequest(){
+  const region = $("region").value, text = $("text").value.trim(), st = $("status");
+  st.className = "msg";
+  if(!region || !text){ st.textContent = t("fill"); st.className = "msg bad"; return; }
+  $("send").disabled = true; st.textContent = "…";
+  try{
+    const r = await api("/api/requests", {method:"POST", body:{country_code:"IN", region, citizen_id:citizenId(),
+      channel: state.voice ? "Voice (speech-to-text)" : "Text / web form", text}});
+    const dots = h("span", {class:"dots"}, [1,2,3,4,5].map(i => h("span", {class:i<=r.severity?"on":""})));
+    const box = $("reveal"); box.innerHTML = ""; box.hidden = false;
+    box.append(
+      h("div", {class:"kv"}, h("b", {}, t("under")), r.summary),
+      h("div", {class:"kv"}, h("b", {}, t("sector")), (ICON[r.sector]||"") + " " + r.sector),
+      h("div", {class:"kv"}, h("b", {}, t("urg")), dots)
+    );
+    st.textContent = t("saved"); $("text").value = ""; state.voice = false; state.sent = true; updateSteps();
+  }catch(e){ st.textContent = e.message; st.className = "msg bad"; }
+  $("send").disabled = false;
+}
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null;
+if(!SR){ $("mic").disabled = true; }
+function toggleMic(){
+  if(!SR) return;
+  if(rec){ rec.stop(); return; }
+  rec = new SR(); rec.lang = state.lang + "-IN"; rec.interimResults = false;
+  rec.onstart = () => { $("mic").classList.add("live"); $("mic").textContent = "● …"; };
+  rec.onend = rec.onerror = () => { rec = null; $("mic").classList.remove("live"); $("mic").textContent = t("speak"); };
+  rec.onresult = e => { const box = $("text"); box.value = (box.value ? box.value + " " : "") + e.results[0][0].transcript; state.voice = true; };
+  try{ rec.start(); }catch(e){ rec = null; }
+}
+
+async function loadMine(){
+  const list = $("mine-list"); list.innerHTML = "";
+  try{
+    const rows = await api("/api/my-requests?country_code=IN&citizen_id=" + encodeURIComponent(citizenId()));
+    if(!rows.length){ list.append(h("div", {class:"empty"}, t("none"))); return; }
+    rows.forEach(r => {
+      const cls = r.status.startsWith("Flagged") ? "hi" : r.status.startsWith("Under") ? "mid" : "";
+      list.append(h("div", {class:"item"},
+        h("div", {class:"head"}, h("span", {}, r.region + " · " + (ICON[r.sector]||"") + " " + r.sector), h("span", {class:"badge "+cls}, r.status)),
+        h("div", {style:"margin-top:6px"}, r.summary),
+        h("div", {class:"meta"}, h("span", {}, r.detected_language), h("span", {}, t("urg") + " " + r.severity + "/5"), h("span", {}, new Date(r.created_at + "Z").toLocaleString()))));
+    });
+  }catch(e){ banner(e.message, loadMine); }
+}
+
+/* ---------- admin: policymaker view ---------- */
+function heat(i){ return `hsl(${178 - i/100*164}, 55%, ${20 + i/100*14}%)`; }
+async function loadDash(){
+  if(state.role !== "admin") return;
+  api("/api/health").then(h => { $("health-badge").textContent = `AI: ${h.ai_mode} · DB: ${h.database}`; }).catch(() => {});
+  try{
+    const [d, reqs] = await Promise.all([api("/api/dashboard?country_code=IN", {auth:true}), api("/api/requests?country_code=IN", {auth:true})]);
+    $("st-total").textContent = d.total_requests; $("st-regions").textContent = d.regions_reporting; $("st-sector").textContent = d.top_sector || "—";
+    $("heat").innerHTML = "";
+    d.hotspots.forEach(x => { const c = h("div", {class:"cell"}, h("b", {}, x.region), h("small", {}, x.count)); c.style.background = heat(x.intensity); $("heat").append(c); });
+    const ranks = $("ranks"); ranks.innerHTML = "";
+    if(!d.ranked_projects.length) ranks.append(h("div", {class:"empty"}, t("none")));
+    d.ranked_projects.forEach((g, i) => {
+      const title = h("div", {style:"font-weight:600;color:var(--amber);margin-top:8px"}), text = h("div", {style:"margin-top:8px;font-size:13.5px"});
+      const btn = h("button", {class:"brief", type:"button"}, t("brief"));
+      btn.onclick = async () => {
+        btn.disabled = true; btn.textContent = "…";
+        try{ const b = await api("/api/brief", {method:"POST", auth:true, body:{country_code:"IN", region:g.region, sector:g.sector}}); title.textContent = b.project_title; text.textContent = b.brief; }
+        catch(e){ text.textContent = e.message; }
+        btn.disabled = false; btn.textContent = t("brief");
+      };
+      ranks.append(h("div", {class:"item"},
+        h("div", {class:"head"}, h("span", {}, (i+1) + ". " + g.region + " — " + (ICON[g.sector]||"") + " " + g.sector), h("span", {class:"badge mid"}, g.score)),
+        h("div", {class:"bar"}, h("i", {style:"width:" + g.score + "%"})),
+        h("div", {class:"meta"}, h("span", {}, g.count + " · " + t("urg") + " " + g.avg_severity.toFixed(1) + "/5")), btn, title, text));
+    });
+    const sec = $("sectors"); sec.innerHTML = ""; const max = Math.max(1, ...Object.values(d.sector_totals));
+    Object.entries(ICON).forEach(([s, ic]) => { const n = d.sector_totals[s] || 0;
+      sec.append(h("div", {class:"srow"}, h("span", {}, ic), h("span", {}, s), h("div", {class:"bar a"}, h("i", {style:"width:" + n/max*100 + "%"})), h("span", {}, n))); });
+    const feed = $("feed"); feed.innerHTML = "";
+    if(!reqs.length) feed.append(h("div", {class:"empty"}, t("none")));
+    reqs.slice(0, 8).forEach(r => feed.append(h("div", {class:"feed"}, r.summary, h("div", {class:"meta"}, h("span", {}, r.region), h("span", {}, r.detected_language), h("span", {}, t("urg") + " " + r.severity + "/5")))));
+  }catch(e){
+    if(e.status === 401){ logout("login"); $("lg-err").textContent = t("bad"); return; }
+    banner(e.message, loadDash);
+  }
+}
+async function adminLogin(){
+  const err = $("lg-err"); err.textContent = "";
+  try{
+    const r = await api("/api/admin/login", {method:"POST", body:{user_id:$("lg-id").value.trim(), password:$("lg-pw").value}});
+    state.token = r.token; state.role = "admin"; $("lg-pw").value = ""; show("dash");
+  }catch(e){ err.textContent = e.status === 401 ? t("bad") : e.message; }
+}
+
+/* ---------- wire up ---------- */
+$("theme-btn").onclick = () => setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+$("go-user").onclick = () => { state.role = "user"; show("citizen"); };
+$("go-admin").onclick = () => { $("lg-err").textContent = ""; show("login"); };
+$("about-link").onclick = () => show("about");
+$("about-back").onclick = () => show(state.role ? (state.role === "admin" ? "dash" : "citizen") : "landing");
+$("lg-back").onclick = () => show("landing");
+$("exit-btn").onclick = () => logout("landing");
+$("lg-btn").onclick = adminLogin;
+$("lg-pw").onkeydown = e => { if(e.key === "Enter") adminLogin(); };
+$("send").onclick = sendRequest;
+$("mic").onclick = toggleMic;
+$("text").addEventListener("input", () => { state.voice = false; state.sent = false; updateSteps(); });
+$("region").addEventListener("change", () => { state.sent = false; updateSteps(); });
+$("clear").onclick = async () => {
+  if(!confirm(t("clear") + "?")) return;
+  try{ await api("/api/requests?country_code=IN", {method:"DELETE", auth:true}); }catch(e){}
+  loadDash();
+};
+setTheme(store.get("theme") || "dark");
+setLang(store.get("lang") || "en");
+show("landing");
+</script>
+</body>
+</html>
